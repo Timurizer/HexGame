@@ -58,5 +58,11 @@ public class GridField : MonoBehaviour {
 		return result;
 
 	}
+
+	private void HexFilling(){
+		
+	}
+
+
 		
 }

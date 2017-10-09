@@ -34,6 +34,9 @@ public class Hex : MonoBehaviour {
 		}
 		transform.localPosition = transformation;
 		GetCorners ();
+		DrawMesh ();
+		DrawBorders ();
+
 	}
 
 	//locates the corners of hex
@@ -69,9 +72,25 @@ public class Hex : MonoBehaviour {
 		return corners;
 	}
 
-	// draws the hex borders and sets mesh
-	public void Draw(){
-		// drawing mesh
+	// makes hex's borders
+	public void DrawBorders(){
+		GameObject borders = new GameObject ();
+		borders.name = "borders";
+		int i = 0;
+		while(i < 6) {
+
+			GameObject border = Instantiate(Resources.Load("Prefabs/Border")) as GameObject;
+			border.transform.position =  (corners [i + 1] + corners [i]) / 2;
+			border.transform.rotation = Quaternion.Euler(0, 30 + 60 * i, 0);
+			border.transform.SetParent (borders.transform);
+			i++;
+		}
+
+		borders.transform.SetParent (this.transform);
+	}
+
+	// makes hex's mesh
+	public void DrawMesh(){
 		gameObject.AddComponent<MeshFilter>();
 		gameObject.AddComponent<MeshRenderer>();
 		Mesh mesh = GetComponent<MeshFilter>().mesh;
@@ -95,22 +114,8 @@ public class Hex : MonoBehaviour {
 		mesh.vertices = vertices;
 		mesh.uv = uvs;
 		mesh.triangles =  new int[] {0, 1, 6, 1, 2, 6, 2, 3, 6, 3, 4, 6, 4, 5, 6, 5, 0, 6};
-
-		// drawing borders
-		GameObject borders = new GameObject ();
-		borders.name = "borders";
-		int i = 0;
-		while(i < 6) {
-			
-			GameObject border = Instantiate(Resources.Load("Prefabs/Border")) as GameObject;
-			border.transform.position =  (corners [i + 1] + corners [i]) / 2;
-			border.transform.rotation = Quaternion.Euler(0, 30 + 60 * i, 0);
-			border.transform.SetParent (borders.transform);
-			i++;
-		}
-
-		borders.transform.SetParent (this.transform);
 	}
+
 
 	// applies the texture to the mesh
 	public void ApplyTexture(string path){
