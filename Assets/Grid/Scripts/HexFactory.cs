@@ -15,7 +15,6 @@ public class HexFactory : MonoBehaviour {
 	private static GameObject CreateHexBase(int x, int z){
 		GameObject hex = Instantiate(Resources.Load("Prefabs/Hex")) as GameObject;
 		hex.GetComponent<Hex>().Initialize(x, z);
-		hex.GetComponent<Hex>().Draw();
 		return hex;
 	}
 
