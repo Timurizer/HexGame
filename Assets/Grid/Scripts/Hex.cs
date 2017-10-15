@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ public class Hex : MonoBehaviour {
 	static float outerRadius = 1f;
 	static float innerRadius = outerRadius * 0.866025404f;
 	Vector3[] corners;
-
+	bool locked;
 
 	// Use this for initialization
 	void Start () {
@@ -36,7 +36,15 @@ public class Hex : MonoBehaviour {
 		GetCorners ();
 		DrawMesh ();
 		DrawBorders ();
+		locked = false;
+	}
 
+	public void Lock(){
+		locked = true;
+	}
+
+	public bool IsLocked(){
+		return locked;
 	}
 
 	//locates the corners of hex

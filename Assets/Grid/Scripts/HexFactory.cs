@@ -12,7 +12,7 @@ public class HexFactory : MonoBehaviour {
 	}
 
 	// instantiating and setting the position of hex
-	private static GameObject CreateHexBase(int x, int z){
+	public static GameObject CreateHexBase(int x, int z){
 		GameObject hex = Instantiate(Resources.Load("Prefabs/Hex")) as GameObject;
 		hex.GetComponent<Hex>().Initialize(x, z);
 		return hex;
