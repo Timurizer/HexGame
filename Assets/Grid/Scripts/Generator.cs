@@ -89,9 +89,7 @@ public class Generator
 			if (position [0] >= 0 && position [1] >= 0 && position [0] < map.GetLength (0) && position [1] < map.GetLength (1) && map [position [0], position [1]] != 1)
 				result.Add (position);
 		}
-
 		return result;
-
 	}
 
 	// generating height map
@@ -107,7 +105,6 @@ public class Generator
 		return heightMap;
 	}
 
-
 	public static TerrainZone[] GenerateHightMapped(int length, int width, string[] texturePaths, float[] maxHeight, float[] minHeight){
 		float[,] heightMap = GenerateHeightMapPerlin (length, width);
 		TerrainZone[] terrains = new TerrainZone[texturePaths.Length];
@@ -118,19 +115,30 @@ public class Generator
 			terrains [i].SetMinHeight (minHeight [i]);
 		}
 		foreach (TerrainZone tz in terrains) {
-			Debug.Log (tz.GetTexturePath () + " " + tz.GetMinHeight () + " " + tz.GetMaxHeight());
 			for (int i = 0; i < length; i++) {
 				for (int j = 0; j < length; j++) {
 					
 					if (heightMap [i, j] < tz.GetMaxHeight () && heightMap [i, j] >= tz.GetMinHeight ()) {
 						tz.AddHexInside (new int[]{i, j});
-						Debug.Log(heightMap [i, j]);
 					}
 				}
 			}
 		}
-
 		return terrains;
+	}
+		
+	// generates a bell curve
+	float[] GaussianBell(float mean, float stdDev, int size) {
+		float[] data = new float[size];
+
+		for (int i = 0; i < size; i++) {
+			float u1 = Random.Range(0.0f, 1.0f);
+			float u2 = Random.Range(0.0f, 1.0f);
+			float randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);
+			data[i] = mean + stdDev * randStdNormal;
+		}
+
+		return data;
 	}
 
 	 
