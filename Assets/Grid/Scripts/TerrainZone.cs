@@ -6,12 +6,46 @@ public class TerrainZone {
 
 	List<int[]> hexBorders;
 	List<int[]> hexInside;
+	string texturePath;
 	bool finished;
+	float maxHeight;
+	float minHeight;
 
 	public TerrainZone(){
 		hexBorders = new List<int[]> ();
 		hexInside =  new List<int[]> ();
 		finished = false;
+	}
+
+	public TerrainZone(string texturePath){
+		hexBorders = new List<int[]> ();
+		hexInside =  new List<int[]> ();
+		this.texturePath = texturePath;
+		finished = false;
+	}
+
+	public string GetTexturePath(){
+		return texturePath;
+	}
+
+	public void SetMaxHeight(float maxHeight){
+		this.maxHeight = maxHeight;
+	}
+
+	public float GetMaxHeight(){
+		return maxHeight;
+	}
+
+	public void SetMinHeight(float minHeight){
+		this.minHeight = minHeight;
+	}
+
+	public float GetMinHeight(){
+		return minHeight;
+	}
+
+	public void SetTexturePath(string texturePath){
+		this.texturePath = texturePath;
 	}
 
 	public void AddHexBorder(int[] coordinate){
@@ -70,6 +104,8 @@ public class TerrainZone {
 		finishCheck ();
 		return finished;
 	}
+
+
 
 
 
