@@ -34,6 +34,24 @@ public struct HexCoordinates {
 		this.y = -x - z;
 	}
 
+	public HexCoordinates (int x, int y, int z) {
+		this.x = x;
+		this.z = z;
+		this.y = y;
+	}
+
+	public int getX(){
+		return this.x;
+	}
+
+	public int getY(){
+		return this.Y;
+	}
+
+	public int getZ(){
+		return this.Z;
+	}
+
 	public override string ToString () {
 		return "(" +
 			X.ToString() + ", " + Y.ToString() + ", " + Z.ToString() + ")";
@@ -76,7 +94,7 @@ public class Hex : MonoBehaviour
 	// sets the properties of hex and sets its position
 	public void Initialize (int x, int z)
 	{
-		this.x = x;
+		this.x = x - z / 2;
 		this.z = z;
 		hexCoords = FromOffsetCoordinates (x, z);
 
@@ -104,6 +122,10 @@ public class Hex : MonoBehaviour
 	public bool IsLocked ()
 	{
 		return locked;
+	}
+
+	public HexCoordinates GetHexCoord(){
+		return this.hexCoords;
 	}
 
 	//locates the corners of hex
