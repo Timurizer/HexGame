@@ -25,11 +25,11 @@ public class GridField : MonoBehaviour
 			map [hc.getX () + hc.getZ()/2, hc.getZ ()] = HexFactory.CreateGrass (hc.getX () + hc.getZ()/2, hc.getZ ());
 		}
 
-
 		// string[] paths = { "Water", "Grass", "Mountain" };
 		// float[] minHeights = {0f, 0.2f, 0.4f};
 		// float[] maxHeights = {0.2f, 0.4f, 1f};
 		// SetTerrainZones (Generator.GenerateHightMapped (length, width, paths, maxHeights, minHeights));
+
 	}
 	
 	// Update is called once per frame

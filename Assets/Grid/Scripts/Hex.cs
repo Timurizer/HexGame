@@ -33,7 +33,6 @@ public struct HexCoordinates {
 		this.z = z;
 		this.y = -x - z;
 	}
-
 	public HexCoordinates (int x, int y, int z) {
 		this.x = x;
 		this.z = z;
@@ -94,6 +93,7 @@ public class Hex : MonoBehaviour
 	// sets the properties of hex and sets its position
 	public void Initialize (int x, int z)
 	{
+
 		this.x = x - z / 2;
 		this.z = z;
 		hexCoords = FromOffsetCoordinates (x, z);
