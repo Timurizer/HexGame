@@ -39,17 +39,6 @@ public struct HexCoordinates {
 		this.y = y;
 	}
 
-	public int getX(){
-		return this.x;
-	}
-
-	public int getY(){
-		return this.Y;
-	}
-
-	public int getZ(){
-		return this.Z;
-	}
 
 	public override string ToString () {
 		return "(" +
@@ -62,6 +51,13 @@ public struct HexCoordinates {
 
 	public static HexCoordinates FromOffsetCoordinates (int x, int z) {
 		return new HexCoordinates(x, z);
+	}
+
+	public bool IsEqual(HexCoordinates hex){
+		if (hex.X == this.x && hex.Y == this.y && hex.Z == this.z) {
+			return true;
+		}
+		return false;
 	}
 }
 

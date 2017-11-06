@@ -9,12 +9,12 @@ public static class HexCoordintaeTools
 	public static HexCoordinates[] GetNeighbours (HexCoordinates input)
 	{
 		HexCoordinates[] result = new HexCoordinates[6];
-		result [0] = new HexCoordinates (input.getX (), input.getY () - 1, input.getZ () + 1);
-		result [1] = new HexCoordinates (input.getX (), input.getY () + 1, input.getZ () - 1);
-		result [2] = new HexCoordinates (input.getX () + 1, input.getY () - 1, input.getZ ());
-		result [3] = new HexCoordinates (input.getX () - 1, input.getY () + 1, input.getZ ());
-		result [4] = new HexCoordinates (input.getX () + 1, input.getY (), input.getZ () - 1);
-		result [5] = new HexCoordinates (input.getX () - 1, input.getY (), input.getZ () + 1);
+		result [0] = new HexCoordinates (input.X, input.Y - 1, input.Z + 1);
+		result [1] = new HexCoordinates (input.X, input.Y + 1, input.Z - 1);
+		result [2] = new HexCoordinates (input.X + 1, input.Y - 1, input.Z);
+		result [3] = new HexCoordinates (input.X - 1, input.Y + 1, input.Z);
+		result [4] = new HexCoordinates (input.X + 1, input.Y, input.Z - 1);
+		result [5] = new HexCoordinates (input.X - 1, input.Y, input.Z + 1);
 
 		return result;
 	}
@@ -23,12 +23,12 @@ public static class HexCoordintaeTools
 	public static HexCoordinates[] GetDiagonals (HexCoordinates input)
 	{
 		HexCoordinates[] result = new HexCoordinates[6];
-		result [0] = new HexCoordinates (input.getX () + 2, input.getY () - 1, input.getZ () - 1);
-		result [1] = new HexCoordinates (input.getX () - 2, input.getY () + 1, input.getZ () + 1);
-		result [2] = new HexCoordinates (input.getX () + 1, input.getY () + 1, input.getZ () - 2);
-		result [3] = new HexCoordinates (input.getX () - 1, input.getY () - 1, input.getZ () + 2);
-		result [4] = new HexCoordinates (input.getX () + 1, input.getY () - 2, input.getZ () + 1);
-		result [5] = new HexCoordinates (input.getX () - 1, input.getY () + 2, input.getZ () - 1);
+		result [0] = new HexCoordinates (input.X + 2, input.Y - 1, input.Z - 1);
+		result [1] = new HexCoordinates (input.X - 2, input.Y + 1, input.Z + 1);
+		result [2] = new HexCoordinates (input.X + 1, input.Y + 1, input.Z - 2);
+		result [3] = new HexCoordinates (input.X - 1, input.Y - 1, input.Z + 2);
+		result [4] = new HexCoordinates (input.X + 1, input.Y - 2, input.Z + 1);
+		result [5] = new HexCoordinates (input.X - 1, input.Y + 2, input.Z - 1);
 
 		return result;
 	}
@@ -36,9 +36,9 @@ public static class HexCoordintaeTools
 	// returns the distance between 2 hex coordinates a and b
 	public static int DistanceBetween (HexCoordinates a, HexCoordinates b)
 	{
-		int xDif = Mathf.Abs (a.getX () - b.getX ());
-		int yDif = Mathf.Abs (a.getY () - b.getY ());
-		int zDif = Mathf.Abs (a.getZ () - b.getZ ());
+		int xDif = Mathf.Abs (a.X - b.X);
+		int yDif = Mathf.Abs (a.Y - b.Y);
+		int zDif = Mathf.Abs (a.Z - b.Z);
 
 		return Mathf.Max (xDif, yDif, zDif);
 	}
@@ -50,9 +50,9 @@ public static class HexCoordintaeTools
 
 	private static HexCoordinates HexLerp (HexCoordinates a, HexCoordinates b, float t)
 	{ // for hexes
-		int[] coordinates = HexCoordinateRounding (lerp (a.getX (), b.getX (), t),
-			                    lerp (a.getY (), b.getY (), t),
-			                    lerp (a.getZ (), b.getZ (), t));
+		int[] coordinates = HexCoordinateRounding (lerp (a.X, b.X , t),
+			                    lerp (a.Y , b.Y, t),
+			                    lerp (a.Z , b.Z, t));
 		return new HexCoordinates (coordinates [0], coordinates [1], coordinates [2]); 
 	}
 
@@ -102,7 +102,7 @@ public static class HexCoordintaeTools
 		for (int i = -N; i <= N; i++) { //-N ≤ dx ≤ N:
 			for (int j = Mathf.Max (-N, - i - N); j <= Mathf.Min (N, -i + N); j++) {  //(-N, -dx-N) ≤ dy ≤ min(N, -dx+N):
 				int k = -i - j;//var dz = -dx-dy
-				result [count] = new HexCoordinates (input.getX () + i, input.getY () + j, input.getZ () + k);//results.append(cube_add(center, Cube(dx, dy, dz)))
+				result [count] = new HexCoordinates (input.X + i, input.Y + j, input.Z + k);//results.append(cube_add(center, Cube(dx, dy, dz)))
 				count++;
 
 			}
@@ -110,6 +110,59 @@ public static class HexCoordintaeTools
 		return result;
 	}
 
+	// gets the intersection of two hexCoordinates[] zones
+	// TODO: optimize
+	public static HexCoordinates[] ZoneIntersection(HexCoordinates[] A, HexCoordinates[] B) {
+		HexCoordinates[] tempResult = new HexCoordinates[Mathf.Max(A.Length, B.Length)];
+		int count = 0;
+		for (int i = 0; i < A.Length; i++) {
+			for (int j = 0; j < B.Length; j++) {
+				if (A [i].Equals (B [j])) {
+					tempResult [count] = A [i];
+					count++;
+				}
+			}
+		}
+		HexCoordinates[] result = new HexCoordinates[count];
+		for(int i = 0; i < count; i++){
+			result[i] = tempResult[i];
+		}
+		return result;
+	}
 
+
+	public static List<HexCoordinates> GetMovementRange(HexCoordinates start, int movementRange, List<HexCoordinates> blocked) {
+		
+		List<HexCoordinates> visited = new List<HexCoordinates> ();
+		List<HexCoordinates>[] fringles = new List<HexCoordinates>[movementRange + 1];
+		visited.Add (start);
+		fringles [0] = new List<HexCoordinates> ();
+		fringles [0].Add (start);
+		for (int i = 1; i <= movementRange; i++) {
+			fringles [i] = new List<HexCoordinates> ();
+			foreach (HexCoordinates hc in fringles[i-1]) {
+				HexCoordinates[] neighbours = HexCoordintaeTools.GetNeighbours (hc);
+				foreach (HexCoordinates neighbour in neighbours) {
+					if (!visited.Contains (neighbour) && !blocked.Contains (neighbour)) {
+						visited.Add (neighbour);
+						fringles [i].Add (neighbour);
+					}
+				}
+			}
+		}
+		return visited;
+	}
+
+	public static HexCoordinates[] GetRing(HexCoordinates center, int radius) {
+		HexCoordinates[] result;
+		if (radius == 0) {
+			result = new HexCoordinates[1];
+			result[0] = center;
+			return result;
+		} 
+
+		result = new HexCoordinates[radius * 6];
+
+	}
 
 }

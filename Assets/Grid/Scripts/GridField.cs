@@ -17,13 +17,32 @@ public class GridField : MonoBehaviour
 		// SetMap (50, 50);
 		GenerateBase (50, 50);
 		HexCoordinates a = new HexCoordinates(15, 23);
-		HexCoordinates b = new HexCoordinates(8, 12);
-		HexCoordinates[] line = HexCoordintaeTools.DrawLine(a, b);
-		// HexCoordinates[] line = HexCoordintaeTools.GetRange(a, 8);
-		foreach(HexCoordinates hc in line) {
-			Destroy (map[hc.getX () + hc.getZ()/2, hc.getZ ()]);
-			map [hc.getX () + hc.getZ()/2, hc.getZ ()] = HexFactory.CreateGrass (hc.getX () + hc.getZ()/2, hc.getZ ());
+		HexCoordinates b = new HexCoordinates(16, 21);
+		HexCoordinates start = new HexCoordinates(15, 22);
+
+		List<HexCoordinates> blocked = new List<HexCoordinates> ();
+		blocked.Add (a);
+		blocked.Add (b);
+		blocked.Add (new HexCoordinates(16, 22));
+		blocked.Add (new HexCoordinates(12, 24));
+		blocked.Add (new HexCoordinates(12, 23));
+		List<HexCoordinates> range = HexCoordintaeTools.GetMovementRange (start, 3, blocked);
+		//HexCoordinates[] range1 = HexCoordintaeTools.GetRange(a, 8);
+		//HexCoordinates[] range2 = HexCoordintaeTools.GetRange(b, 8);
+		foreach(HexCoordinates hc in range) {
+			Destroy (map[hc.X + hc.Z/2, hc.Z]);
+			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateGrass (hc.X + hc.Z/2, hc.Z);
 		}
+		foreach(HexCoordinates hc in blocked) {
+			Destroy (map[hc.X + hc.Z/2, hc.Z]);
+			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateSand (hc.X + hc.Z/2, hc.Z);
+		}
+		//  HexCoordinates[] intersection = HexCoordintaeTools.ZoneIntersection (range1, range2);
+		// foreach(HexCoordinates hc in intersection) {
+		Destroy (map[start.X + start.Z/2, start.Z]);
+		map [start.X + start.Z/2, start.Z] = HexFactory.CreateMountain (start.X +start.Z/2, start.Z);
+		// }
+
 
 		// string[] paths = { "Water", "Grass", "Mountain" };
 		// float[] minHeights = {0f, 0.2f, 0.4f};
