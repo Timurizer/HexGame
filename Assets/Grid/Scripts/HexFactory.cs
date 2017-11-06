@@ -42,5 +42,10 @@ public class HexFactory : MonoBehaviour {
 	public static GameObject CreateGrass(int x, int z){
 		return CreateHexOfType(x, z, "Grass");
 	}
+
+	public static GameObject CreateMountain(int x, int z){
+		return CreateHexOfType(x, z, "Mountain");
+	}
+
 		
 }
