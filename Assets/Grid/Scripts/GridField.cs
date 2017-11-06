@@ -26,9 +26,10 @@ public class GridField : MonoBehaviour
 		blocked.Add (new HexCoordinates(16, 22));
 		blocked.Add (new HexCoordinates(12, 24));
 		blocked.Add (new HexCoordinates(12, 23));
-		List<HexCoordinates> range = HexCoordintaeTools.GetMovementRange (start, 3, blocked);
-		//HexCoordinates[] range1 = HexCoordintaeTools.GetRange(a, 8);
-		//HexCoordinates[] range2 = HexCoordintaeTools.GetRange(b, 8);
+		HexCoordinates[] circle = HexCoordinateTools.GetRing (start, 5);
+		List<HexCoordinates> range = HexCoordinateTools.GetMovementRange (start, 3, blocked);
+		//HexCoordinates[] range1 = HexCoordinateTools.GetRange(a, 8);
+		//HexCoordinates[] range2 = HexCoordinateTools.GetRange(b, 8);
 		foreach(HexCoordinates hc in range) {
 			Destroy (map[hc.X + hc.Z/2, hc.Z]);
 			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateGrass (hc.X + hc.Z/2, hc.Z);
@@ -37,7 +38,11 @@ public class GridField : MonoBehaviour
 			Destroy (map[hc.X + hc.Z/2, hc.Z]);
 			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateSand (hc.X + hc.Z/2, hc.Z);
 		}
-		//  HexCoordinates[] intersection = HexCoordintaeTools.ZoneIntersection (range1, range2);
+		foreach(HexCoordinates hc in circle) {
+			Destroy (map[hc.X + hc.Z/2, hc.Z]);
+			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateSand (hc.X + hc.Z/2, hc.Z);
+		}
+		//  HexCoordinates[] intersection = HexCoordinateTools.ZoneIntersection (range1, range2);
 		// foreach(HexCoordinates hc in intersection) {
 		Destroy (map[start.X + start.Z/2, start.Z]);
 		map [start.X + start.Z/2, start.Z] = HexFactory.CreateMountain (start.X +start.Z/2, start.Z);
@@ -90,12 +95,6 @@ public class GridField : MonoBehaviour
 			}
 		}
 	}
-
-
-
-
-
-
 
 
 
