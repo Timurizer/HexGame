@@ -2,8 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class HexCoordintaeTools
-{
+public static class HexCoordinateTools
+{	
+
+	private static HexCoordinates[] directions = new HexCoordinates[6] { 
+		new HexCoordinates(1, -1,  0),
+		new HexCoordinates(1, 0,  -1),
+		new HexCoordinates(0, 1, -1),
+		new HexCoordinates(-1, 1,  0),
+		new HexCoordinates(-1, 0,  1),
+		new HexCoordinates(0, -1,  1)
+	};
+
+	public static HexCoordinates HexDirection(int direction) {
+		return directions [direction];
+	}
+
+	public static HexCoordinates HexNeighbour(HexCoordinates hex, int direction) {
+		return HexAddition (hex, HexDirection (direction));
+	} 
+
+	// sums the coordinates
+	public static HexCoordinates HexAddition(HexCoordinates A, HexCoordinates B) {
+		return new HexCoordinates (A.X + B.X, A.Y + B.Y, A.Z + B.Z);
+	}
 
 	// returns the neighbours of given input hex coordinate
 	public static HexCoordinates[] GetNeighbours (HexCoordinates input)
@@ -99,10 +121,10 @@ public static class HexCoordintaeTools
 
 		HexCoordinates[] result = new HexCoordinates[size];
 		int count = 0;
-		for (int i = -N; i <= N; i++) { //-N ≤ dx ≤ N:
-			for (int j = Mathf.Max (-N, - i - N); j <= Mathf.Min (N, -i + N); j++) {  //(-N, -dx-N) ≤ dy ≤ min(N, -dx+N):
-				int k = -i - j;//var dz = -dx-dy
-				result [count] = new HexCoordinates (input.X + i, input.Y + j, input.Z + k);//results.append(cube_add(center, Cube(dx, dy, dz)))
+		for (int i = -N; i <= N; i++) { 
+			for (int j = Mathf.Max (-N, - i - N); j <= Mathf.Min (N, -i + N); j++) {  
+				int k = -i - j;
+				result [count] = new HexCoordinates (input.X + i, input.Y + j, input.Z + k);
 				count++;
 
 			}
@@ -141,7 +163,7 @@ public static class HexCoordintaeTools
 		for (int i = 1; i <= movementRange; i++) {
 			fringles [i] = new List<HexCoordinates> ();
 			foreach (HexCoordinates hc in fringles[i-1]) {
-				HexCoordinates[] neighbours = HexCoordintaeTools.GetNeighbours (hc);
+				HexCoordinates[] neighbours = GetNeighbours (hc);
 				foreach (HexCoordinates neighbour in neighbours) {
 					if (!visited.Contains (neighbour) && !blocked.Contains (neighbour)) {
 						visited.Add (neighbour);
@@ -155,14 +177,23 @@ public static class HexCoordintaeTools
 
 	public static HexCoordinates[] GetRing(HexCoordinates center, int radius) {
 		HexCoordinates[] result;
-		if (radius == 0) {
+		if (radius <= 0) {
 			result = new HexCoordinates[1];
 			result[0] = center;
 			return result;
 		} 
 
 		result = new HexCoordinates[radius * 6];
-
+		int count = 0;
+		HexCoordinates hex = new HexCoordinates (center.X - radius, center.Y, center.Z + radius);
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < radius; j++) {
+				result[count] = hex;
+				count++; 
+				hex = HexNeighbour(hex, i);
+			}
+		}
+		return result;
 	}
 
 }
