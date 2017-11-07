@@ -10,50 +10,37 @@ public class GridField : MonoBehaviour
 
 	GameObject[,] map;
 
+	string mode;
+
 
 	// Use this for initialization
 	void Start ()
 	{
 		// SetMap (50, 50);
 		GenerateBase (50, 50);
-		HexCoordinates a = new HexCoordinates(15, 23);
-		HexCoordinates b = new HexCoordinates(16, 21);
-		HexCoordinates start = new HexCoordinates(15, 22);
+		mode = "";
+	}
 
-		List<HexCoordinates> blocked = new List<HexCoordinates> ();
-		blocked.Add (a);
-		blocked.Add (b);
-		blocked.Add (new HexCoordinates(16, 22));
-		blocked.Add (new HexCoordinates(12, 24));
-		blocked.Add (new HexCoordinates(12, 23));
-		HexCoordinates[] circle = HexCoordinateTools.GetRing (start, 5);
-		List<HexCoordinates> range = HexCoordinateTools.GetMovementRange (start, 3, blocked);
-		//HexCoordinates[] range1 = HexCoordinateTools.GetRange(a, 8);
-		//HexCoordinates[] range2 = HexCoordinateTools.GetRange(b, 8);
-		foreach(HexCoordinates hc in range) {
-			Destroy (map[hc.X + hc.Z/2, hc.Z]);
-			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateGrass (hc.X + hc.Z/2, hc.Z);
+	void OnGUI () {
+		// Make a background box
+		GUI.Box(new Rect(10,10,100,180), "Terrain type");
+
+
+		if(GUI.Button(new Rect(20,40,80,20), "Water")) {
+			this.mode = "Water";
 		}
-		foreach(HexCoordinates hc in blocked) {
-			Destroy (map[hc.X + hc.Z/2, hc.Z]);
-			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateSand (hc.X + hc.Z/2, hc.Z);
+			
+		if(GUI.Button(new Rect(20,70,80,20), "Grass")) {
+			this.mode = "Grass";
 		}
-		foreach(HexCoordinates hc in circle) {
-			Destroy (map[hc.X + hc.Z/2, hc.Z]);
-			map [hc.X + hc.Z/2, hc.Z] = HexFactory.CreateSand (hc.X + hc.Z/2, hc.Z);
+
+		if(GUI.Button(new Rect(20,100,80,20), "Sand")) {
+			this.mode = "Sand";
 		}
-		//  HexCoordinates[] intersection = HexCoordinateTools.ZoneIntersection (range1, range2);
-		// foreach(HexCoordinates hc in intersection) {
-		Destroy (map[start.X + start.Z/2, start.Z]);
-		map [start.X + start.Z/2, start.Z] = HexFactory.CreateMountain (start.X +start.Z/2, start.Z);
-		// }
 
-
-		// string[] paths = { "Water", "Grass", "Mountain" };
-		// float[] minHeights = {0f, 0.2f, 0.4f};
-		// float[] maxHeights = {0.2f, 0.4f, 1f};
-		// SetTerrainZones (Generator.GenerateHightMapped (length, width, paths, maxHeights, minHeights));
-
+		if(GUI.Button(new Rect(20,130,80,20), "Mountain")) {
+			this.mode = "Mountain";
+		}
 	}
 	
 	// Update is called once per frame
@@ -96,7 +83,11 @@ public class GridField : MonoBehaviour
 		}
 	}
 
-
+	public void ChangeHex(int x, int z) {
+		Destroy (map [x + z/2, z]);
+		map [x + z/2, z] = HexFactory.CreateHexOfType (x + z/2, z, mode);
+		map [x + z/2, z].transform.SetParent (this.transform);
+	}
 
 		
 }
