@@ -70,21 +70,7 @@ public class Hex : MonoBehaviour
 	static float outerRadius = 1f;
 	static float innerRadius = outerRadius * 0.866025404f;
 	Vector3[] corners;
-	bool locked;
 	public HexCoordinates hexCoords;
-
-	// Use this for initialization
-	void Start ()
-	{
-		
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		
-	}
 
 	// sets the properties of hex and sets its position
 	public void Initialize (int x, int z)
@@ -102,23 +88,12 @@ public class Hex : MonoBehaviour
 		GetCorners ();
 		DrawMesh ();
 		DrawBorders ();
-		locked = false;
 	}
 
 	public static HexCoordinates FromOffsetCoordinates (int x, int z) {
 		return new HexCoordinates(x - z / 2, z);
 	}
-
-
-	public void Lock ()
-	{
-		locked = true;
-	}
-
-	public bool IsLocked ()
-	{
-		return locked;
-	}
+		
 
 	public HexCoordinates GetHexCoord(){
 		return this.hexCoords;
@@ -182,6 +157,7 @@ public class Hex : MonoBehaviour
 	{
 		gameObject.AddComponent<MeshFilter> ();
 		gameObject.AddComponent<MeshRenderer> ();
+		gameObject.AddComponent<MeshCollider> ();
 		Mesh mesh = GetComponent<MeshFilter> ().mesh;
 
 		mesh.Clear (); 
@@ -202,6 +178,7 @@ public class Hex : MonoBehaviour
 		mesh.vertices = vertices;
 		mesh.uv = uvs;
 		mesh.triangles = new int[] { 0, 1, 6, 1, 2, 6, 2, 3, 6, 3, 4, 6, 4, 5, 6, 5, 0, 6 };
+		gameObject.GetComponent<MeshCollider> ().sharedMesh = mesh;
 	}
 
 
